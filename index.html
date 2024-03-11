@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" prefix="og: https://ogp.me/ns#">
+<html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <link rel="shortcut icon" href="img/icon.png" type="image/png">
@@ -7,19 +8,35 @@
     <link rel="stylesheet" href="style.css">
     <title>Panda, Bonk the Bugs!</title>
 
-    <meta property="og:url" content="">
+    <!-- HTML Meta Tags -->
+    <title>Panda, Bonk the Bugs!</title>
+    <meta name="description" content="Oh, no! Bugs are here to destroy the bamboo plants! Your mission is to stop them. Jump into action now!">
+
+    <!-- Facebook Meta Tags -->
+    <meta property="og:url" content="https://panda-bug-game.glitch.me/">
+    <meta property="og:type" content="website">
     <meta property="og:title" content="Panda, Bonk the Bugs!">
     <meta property="og:description" content="Oh, no! Bugs are here to destroy the bamboo plants! Your mission is to stop them. Jump into action now!">
-    <meta property="og:type" content="website">
-    <meta property="og:image" content="/embedimage.png">
-    <meta property="og:image:type" content="image/png">
-    <meta property="og:image:alt" content="icon">
+    <meta property="og:image" content="https://panda-bug-game.glitch.me/img/embedicon.png">
+
+    <!-- Twitter Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta property="twitter:domain" content="panda-bug-game.glitch.me">
+    <meta property="twitter:url" content="https://panda-bug-game.glitch.me/">
+    <meta name="twitter:title" content="Panda, Bonk the Bugs!">
+    <meta name="twitter:description" content="Oh, no! Bugs are here to destroy the bamboo plants! Your mission is to stop them. Jump into action now!">
+    <meta name="twitter:image" content="https://panda-bug-game.glitch.me/img/embedicon.png">
+
+    <!-- Meta Tags Generated via https://www.opengraph.xyz -->
 </head>
+
 <body>
     <canvas></canvas>
 
     <div id="gameover-container">
-        <b><p id="gameover-headertext">Game Over!</p></b>
+        <b>
+            <p id="gameover-headertext">Game Over!</p>
+        </b>
         <p id="gameover-smalltext">a</p>
         <p id="gameover-score">Your score: <b><span id="gameover-score-number">0</span></b></p>
         <button id="gameover-btn-retry">Retry</button>
@@ -37,10 +54,11 @@
         <div class="start-row">
             <button id="btn-start">Click to Start!</button>
         </div>
-        
+
     </div>
 
 
     <script type="module" src="main.js"></script>
 </body>
+
 </html>
