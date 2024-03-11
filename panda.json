@@ -1,0 +1,36 @@
+{
+    "spritesheet":"img/panda.png",
+    "frame_w": 480,
+    "frame_h": 480,
+    "scale_w": 480,
+    "scale_h": 480,
+    "animations":[
+        {
+            "name": "idle",
+            "loop": false,
+            "frames": [
+                { "x":0, "y":0 }
+            ]
+        },
+        {
+            "name": "climb",
+            "loop": true,
+            "frame_delay_ms": 33,
+            "frames": [
+                { "x":480, "y":0 },
+                { "x":960, "y":0 },
+                { "x":0, "y":480 },
+                { "x":960, "y":0 }
+            ]
+        },
+        {
+            "name": "fail",
+            "loop": true,
+            "frame_delay_ms": 80,
+            "frames": [
+                { "x":480, "y":480 },
+                { "x":960, "y":480 }
+            ]
+        }
+    ]
+}

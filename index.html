@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" prefix="og: https://ogp.me/ns#">
+<head>
+    <meta charset="UTF-8">
+    <link rel="shortcut icon" href="img/icon.png" type="image/png">
+    <link rel="icon" href="img/icon.png" type="image/png">
+    <link rel="stylesheet" href="style.css">
+    <title>Panda, Bonk the Bugs!</title>
+
+    <meta property="og:url" content="">
+    <meta property="og:title" content="Panda, Bonk the Bugs!">
+    <meta property="og:description" content="Oh, no! Bugs are here to destroy the bamboo plants! Your mission is to stop them. Jump into action now!">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="/embedimage.png">
+    <meta property="og:image:type" content="image/png">
+    <meta property="og:image:alt" content="icon">
+</head>
+<body>
+    <canvas></canvas>
+
+    <div id="gameover-container">
+        <b><p id="gameover-headertext">Game Over!</p></b>
+        <p id="gameover-smalltext">a</p>
+        <p id="gameover-score">Your score: <b><span id="gameover-score-number">0</span></b></p>
+        <button id="gameover-btn-retry">Retry</button>
+    </div>
+
+    <div id="start-btn-container">
+        <div class="start-row">
+            <img src="img/wasd.png" alt="wasd">
+            <h1>Movement</h1>
+        </div>
+        <div class="start-row">
+            <img src="img/k.png" width="60" alt="k">
+            <h1>Attack</h1>
+        </div>
+        <div class="start-row">
+            <button id="btn-start">Click to Start!</button>
+        </div>
+        
+    </div>
+
+
+    <script type="module" src="main.js"></script>
+</body>
+</html>
