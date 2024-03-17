@@ -17,9 +17,8 @@ class AudioClip {
 
     play(loop, start_delay_s) {
         if (!this.playable) return;
-        //if ()
+
         this.clipVolume.gain.value = 1;
-        this.clipVolume.gain.cancelScheduledValues(this.a.currentTime);
         this.source = this.a.createBufferSource();
         this.source.loop = loop === true ? true : false;
         this.source.buffer = this.audioBuffer;
@@ -35,7 +34,6 @@ class AudioClip {
 export class AudioManager {
     constructor() {
         this.a = new AudioContext();
-        this.a.suspend();
 
         this.masterVolume = this.a.createGain();
         this.masterVolume.connect(this.a.destination);
@@ -66,7 +64,8 @@ export class AudioManager {
      * @param {Number} start_delay_s delaying the start of the playback (seconds)
      */
     playAudioClip(id, loop, start_delay_s) {
-        this.audioClips[id].play(loop, this.a.currentTime + start_delay_s);
+        let c = this.audioClips[id];
+        c.play(loop, this.a.currentTime + start_delay_s);
     }
 
     /**
@@ -74,7 +73,11 @@ export class AudioManager {
      * @param {String} id custom id of the audio clip
      */
     stopAudioClip(id) {
-        this.audioClips[id].stop();
+        let c = this.audioClips[id];
+
+        c.clipVolume.gain.cancelScheduledValues(this.a.currentTime);
+
+        c.stop();
     }
 
     /**
@@ -84,10 +87,11 @@ export class AudioManager {
      */
     stopWithFadeOut(id, fadeout_length_s) {
         let c = this.audioClips[id];
-        c.clipVolume.gain.cancelScheduledValues(this.a.currentTime);
-        let endTime = this.a.currentTime + fadeout_length_s
-        c.clipVolume.gain.value = 1;
+        let endTime = this.a.currentTime + fadeout_length_s;
+        
         c.clipVolume.gain.linearRampToValueAtTime(0, endTime);
+        c.clipVolume.gain.cancelScheduledValues(endTime);
+
         c.stop(endTime);
     }
 }
