@@ -26,10 +26,9 @@ export class Enemy {
             rotate: null
         };
 
-
         this.collisionBox = {
-            x: 0,
-            y: 0,
+            x: this.x,
+            y: this.y,
             w: 40,
             h: 65
         }
@@ -41,14 +40,9 @@ export class Enemy {
         }
 
         this.colliding = false;
-        
     }
     
     update() {
-        this.colliding = this.game.playfield.checkCollision(this.collisionBox, this.game.player.collisionBox);
-
-        this.sprite.flip_h = this.shouldFlip;
-
         // Enemy collided with player, so the fail animations taking over the control of the sprite
         if (this.takeOverControl){
             this.y = this.fallAnimations.fallY.currentValue;
@@ -69,15 +63,14 @@ export class Enemy {
             return;
         };
 
-        if (this.colliding && this.game.player.attacking) this.startFallAnimation();
-        if (this.colliding && !this.game.player.attacking) this.game.player.setFailState();
-
-        
-
         this.sprite.x = this.x;
         this.sprite.y = this.y + this.spriteYOffset;
         this.collisionBox.y = this.y;
 
+        this.colliding = this.game.playfield.checkCollision(this.collisionBox, this.game.player.collisionBox);
+
+        if (this.colliding && this.game.player.attacking) this.startFallAnimation();
+        if (this.colliding && !this.game.player.attacking) this.game.player.setFailState();
     }
 
     render() {
