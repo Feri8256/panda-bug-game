@@ -9,6 +9,8 @@ import { EASING, Animation } from "./animationEngine.js";
 import { SpriteAnimator } from "./spriteAnimator.js";
 import { AudioManager } from "./audioManager.js";
 import { HitEffect } from "./hitEffect.js";
+import { ScoreManager } from "./scoreManager.js";
+import { PlayfieldDecorator } from "./playfieldDecorator.js";
 
 const CONSTANTS = {
     frametime_constant_ms: 16,
@@ -39,7 +41,7 @@ class Game {
         this.WIDTH = width;
         this.HEIGHT = height;
 
-        this.startContainer = document.querySelector("#start-btn-container")
+        this.startContainer = document.querySelector("#start-btn-container");
 
         this.buttonStart = document.querySelector("#btn-start");
         this.buttonStart.addEventListener("click", () => {
@@ -64,6 +66,10 @@ class Game {
 
         this.ctx = this.canvas.getContext("2d");
 
+        this.backgroundGradient = this.ctx.createLinearGradient(0,0,1,this.HEIGHT);
+        this.backgroundGradient.addColorStop(0, "#0066a0");
+        this.backgroundGradient.addColorStop(1, "#00f3f3");
+
         //
         this.score = 0;
         this.playing = false;
@@ -74,7 +80,6 @@ class Game {
         this.sprite = Sprite;
         this.animation = Animation;
         this.hitVFX = HitEffect;
-
 
         this.audioManager = new AudioManager();
 
@@ -90,26 +95,31 @@ class Game {
         this.audioManager.loadFile("sfx/hit3.ogg", "HIT_2");
         this.audioManager.loadFile("sfx/hit4.ogg", "HIT_3");
 
-        this.bugSprites = [
-            new SpriteImage("img/bug0.png"),
-            new SpriteImage("img/bug1.png"),
-            new SpriteImage("img/bug2.png"),
-            new SpriteImage("img/bug3.png"),
-            new SpriteImage("img/bug4.png")
-        ];
-
-        this.hitEffectSprites = [
-            new SpriteImage("img/vfx-hit0.png"),
-            new SpriteImage("img/vfx-hit1.png"),
-            new SpriteImage("img/vfx-hit2.png"),
-            new SpriteImage("img/vfx-hit3.png")
-        ];
+        this.sprites = {
+            scoreFrame: new SpriteImage("img/score-frame.png"),
+            cloud: new SpriteImage("img/cloud.png"),
+            bugs: [
+                new SpriteImage("img/bug0.png"),
+                new SpriteImage("img/bug1.png"),
+                new SpriteImage("img/bug2.png"),
+                new SpriteImage("img/bug3.png"),
+                new SpriteImage("img/bug4.png")
+            ],
+            hitEffects: [
+                new SpriteImage("img/vfx-hit0.png"),
+                new SpriteImage("img/vfx-hit1.png"),
+                new SpriteImage("img/vfx-hit2.png"),
+                new SpriteImage("img/vfx-hit3.png")
+            ]
+        };
 
         this.easings = EASING;
         this.inputHandler = new InputHandler();
+        this.scoreManager = new ScoreManager(this);
         this.enemyManager = new EnemyManager(this);
         this.player = new Player(this);
         this.playfield = new Playfield(this);
+        this.playfieldDecorator = new PlayfieldDecorator(this);
 
         this.previousFrameTimestamp = 0;
         this.deltaTime = 0;
@@ -123,36 +133,37 @@ class Game {
 
         this.deltaTime = this.clock - this.previousFrameTimestamp;
         this.previousFrameTimestamp = this.clock;
-        this.speedCorrection = this.deltaTime / this.CONSTANTS.frametime_constant_ms;
+        this.speedCorrection = this.deltaTime > 500 ? 1 : this.deltaTime / this.CONSTANTS.frametime_constant_ms;
+
+        this.playfieldDecorator.update();
 
         if (!this.playing) return;
-
         this.playfield.update();
         this.player.update();
         this.enemyManager.update();
-
+        this.scoreManager.update();
     }
 
     render() {
         this.ctx.clearRect(0, 0, this.WIDTH, this.HEIGHT);
 
         // Background
-        this.ctx.fillStyle = "#00f3f3";
+        this.ctx.fillStyle = this.backgroundGradient;
         this.ctx.fillRect(0, 0, this.WIDTH, this.HEIGHT);
 
+        this.playfieldDecorator.render();
         this.playfield.render();
         this.player.render();
         this.enemyManager.render();
+        this.scoreManager.render();
     }
 
     resetGame() {
-        this.score = 0;
+        this.scoreManager.reset();
         this.player.reset();
-        this.player.setState(0);
         this.playfield.initPlayerStart();
         this.enemyManager.reset();
         this.audioManager.playAudioClip("BGM", true, 0.3);
-
     }
 
     start() {
@@ -164,7 +175,7 @@ class Game {
     }
 
     retry() {
-        this.resetGame()
+        this.resetGame();
 
         this.gameOverOverlay.container.animate(
             [
@@ -200,7 +211,7 @@ class Game {
         let rdm = Math.floor(Math.random() * this.CONSTANTS.gameover_strings.length);
         this.gameOverOverlay.headerText.textContent = this.CONSTANTS.gameover_strings[rdm].headerText;
         this.gameOverOverlay.smallText.textContent = this.CONSTANTS.gameover_strings[rdm].smallText;
-        this.gameOverOverlay.scoreNumber.textContent = this.score;
+        this.gameOverOverlay.scoreNumber.textContent = this.scoreManager.score;
 
         this.gameOverOverlay.container.animate(
             [

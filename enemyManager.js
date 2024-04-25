@@ -28,7 +28,10 @@ export class EnemyManager {
         this.enemies.forEach(e => {
             e.update();
             if (!e.takeOverControl) e.y -= this.game.CONSTANTS.enemy_speed * this.game.speedCorrection;
-            if (e.y + e.collisionBox.h < 0) e.markedForDeletion = true;
+            if (e.y + e.collisionBox.h < 0) {
+              e.markedForDeletion = true;
+              this.game.scoreManager.breakCombo();
+            }
         });
 
         this.enemies = this.enemies.filter((en) => { return !en.markedForDeletion });

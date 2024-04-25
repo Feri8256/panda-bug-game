@@ -1,5 +1,6 @@
 /**
  * Easing functions to use with Animation class
+ * https://easings.net/
  */
 export let EASING = {
     Linear: (x) => {
@@ -22,6 +23,9 @@ export let EASING = {
     },
     QuartOut: (x) => {
         return 1 - Math.pow(1 - x, 4);
+    },
+    CubicIn: (x) => {
+        return x * x * x;
     }
 };
 
@@ -33,8 +37,9 @@ export class Animation {
      * @param {Number} startValue start value
      * @param {Number} endValue end value
      * @param {Function} easing easing function
+     * @param {Boolean} looped animation looped
      */
-    constructor(startTime, endTime, startValue, endValue, easing) {
+    constructor(startTime, endTime, startValue, endValue, easing, looped) {
         this.startTime = startTime;
         this.endTime = endTime;
         this.startValue = startValue;
@@ -43,6 +48,7 @@ export class Animation {
         this.duration = this.endTime - this.startTime;
         this.amount = 0;
         this.easing = easing;
+        this.looped = looped === true ? true : false;
     }
     /**
      * 
@@ -52,5 +58,12 @@ export class Animation {
         let checkProgress = (currentTime - this.startTime) / this.duration;
         this.amount = Math.max(0, Math.min(checkProgress, 1));
         this.currentValue = this.startValue + (this.endValue - this.startValue) * this.easing(this.amount);
+
+        if (this.looped && this.amount === 1) {
+            this.startTime = currentTime;
+            this.endTime = currentTime + this.duration;
+            this.amount = 0;
+            this.currentValue = this.startValue;
+        }
     }
 }

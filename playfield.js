@@ -71,7 +71,6 @@ export class Playfield {
         }
 
         this.game.player.lastHorizontalMovementTimestamp = this.game.clock;
-        return this.game.player.poleIndex;
     }
 
     /**
@@ -87,7 +86,7 @@ export class Playfield {
         if (testY <= 0) return;
         if (testY + this.game.player.collisionBox.h >= this.game.HEIGHT) return;
         
-        this.game.player.y += speed * direction * this.game.speedCorrection;
+        this.game.player.y = testY;
     }
 
     /**

@@ -74,9 +74,7 @@ export class AudioManager {
      */
     stopAudioClip(id) {
         let c = this.audioClips[id];
-
         c.clipVolume.gain.cancelScheduledValues(this.a.currentTime);
-
         c.stop();
     }
 
@@ -88,10 +86,8 @@ export class AudioManager {
     stopWithFadeOut(id, fadeout_length_s) {
         let c = this.audioClips[id];
         let endTime = this.a.currentTime + fadeout_length_s;
-        
         c.clipVolume.gain.linearRampToValueAtTime(0, endTime);
         c.clipVolume.gain.cancelScheduledValues(endTime);
-
         c.stop(endTime);
     }
 }

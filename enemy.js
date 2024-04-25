@@ -7,7 +7,7 @@ export class Enemy {
         this.x = x;
         this.y = y;
         this.poleIndex = poleIndex;
-        this.randomSprite = this.game.bugSprites[Math.floor(Math.random() * this.game.bugSprites.length)];
+        this.randomSprite = this.game.sprites.bugs[Math.floor(Math.random() * this.game.sprites.bugs.length)];
         this.sprite = new this.game.sprite(this.randomSprite);
 
         this.hitVFX = null;
@@ -84,12 +84,12 @@ export class Enemy {
      */
     startFallAnimation() {
         this.takeOverControl = true;
-        this.game.score += 5;
+        this.game.scoreManager.addToScore();
         
-        this.markForDeleteAfter = this.game.clock + this.game.CONSTANTS.enemy_fall_duration_ms;
-
         let startTime = this.game.clock;
         let endTime = this.game.clock + this.game.CONSTANTS.enemy_fall_duration_ms;
+
+        this.markForDeleteAfter = endTime;
 
         this.fallAnimations.fallY = new this.game.animation(
             startTime,
@@ -111,7 +111,7 @@ export class Enemy {
             startTime,
             endTime,
             0,
-            (Math.random() * 6.28) - Math.PI,
+            (Math.random() * (Math.PI * 2)) - Math.PI,
             this.game.easings.Linear
         );
 
@@ -125,7 +125,7 @@ export class Enemy {
 
         let scaleVFX = new this.game.animation(
             startTime,
-            startTime + 300,
+            startTime + 250,
             0.1,
             0.5,
             this.game.easings.QuartOut
@@ -133,7 +133,7 @@ export class Enemy {
 
         let fadeVFX = new this.game.animation(
             startTime,
-            startTime + 300,
+            startTime + 250,
             1,
             0,
             this.game.easings.SineOut
@@ -141,8 +141,6 @@ export class Enemy {
 
         this.hitVFX = new this.game.hitVFX(this.game, this.x, this.y, scaleVFX, fadeVFX);
 
-        this.game.audioManager.playAudioClip(`HIT_${Math.floor(Math.random()*4)}`)
+        this.game.audioManager.playAudioClip(`HIT_${Math.floor(Math.random()*4)}`);
     }
-
-    //reset() { this.shouldFlip = this.poleIndex+1 % 2 === 0; }
 }

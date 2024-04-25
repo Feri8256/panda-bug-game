@@ -1,12 +1,6 @@
 export class HitEffect {
     constructor(game, x, y, scaleAnimationObject, fadeAnimationObject) {
         this.game = game;
-        this.durationMs = 200;
-        this.startScale = 0.2;
-        this.endScale = 1;
-
-        this.startOpacity = 1;
-        this.endOpacity = 0;
 
         this.x = x;
         this.y = y;
@@ -15,7 +9,7 @@ export class HitEffect {
         this.fadeAnimationObject = fadeAnimationObject;
 
         // Selecting two random sprite for the hit effect. The two can't be the same
-        let spritesArr = this.game.hitEffectSprites;
+        let spritesArr = this.game.sprites.hitEffects;
         let max = spritesArr.length;
         let rdmIndexA = Math.floor( Math.random() * max);
         let rdmIndexB = Math.floor( Math.random() * max);

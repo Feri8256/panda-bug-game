@@ -76,7 +76,7 @@ export class Player {
 
     /**
      * The player enters a state
-     * @param {String} state name of the state
+     * @param {Number} state number id of the state
      */
     setState(state) {
         this.currentState = this.playerStates[state];
@@ -111,9 +111,9 @@ export class Player {
     reset() {
         this.lastHorizontalMovementTimestamp = 0;
         this.takeOverControl = false;
-
+        this.setState(0);
         this.failAnimations = {
             fallY: null
-        }
+        };
     }
 }

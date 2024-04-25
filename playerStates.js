@@ -67,7 +67,6 @@ class Climb extends State {
 
         if (attackKey) {
             this.player.setState(STATE.ATTACK);
-            //this.player.game.playfield.movePlayerUpDown(1, true);
             return;
         }
 
